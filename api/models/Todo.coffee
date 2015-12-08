@@ -17,15 +17,15 @@ sendMsg = (values, todoAdminToken) ->
 		opts = _.extend options, sails.config.http.opts,
 			headers:
 				Authorization:	"Bearer #{todoAdminToken}"
-		#sails.log "opts.headers: " + JSON.stringify opts.headers
+		
 		data = 
 			from: 	sails.config.im.adminjid
 			to:		"#{values.createdBy}@#{sails.config.im.xmpp.domain}"
 			body: 	sails.config.im.txt	+ " : "+ values.task	
-		#sails.log "data: " + JSON.stringify data
+		
 		
 		http.post sails.config.im.url, data, opts, (err, res) ->
-			sails.log "post msg : " + JSON.stringify res.body
+			#sails.log "post msg : " + JSON.stringify res.body
 			if err
 				return reject err
 			fulfill res
@@ -75,16 +75,15 @@ module.exports =
 		
 		#get token 		
 		fulfill = (result) ->
-			sails.log "getToken fulfill: " + result.body.access_token
 			if sails.config.im.sendmsg
 				fulfillmsg = (result) ->
-					sails.log "sendMsg fulfill"	
+					#sails.log "sendMsg fulfill"	
 				rejectmsg = (err) ->
 					sails.log "sendMsg reject"
 				#send msg	
 				sendMsg(values, result.body.access_token).then fulfillmsg, rejectmsg
 			else 	
-				sails.log "config not send msg"
+				#sails.log "config not send msg"
 		reject = (err) ->
 			sails.log "getToken reject"
 		getToken(values).then fulfill, reject
