@@ -15,7 +15,7 @@ iconUrl = (type) ->
 		"image/jpeg":					"img/jpg.png"
 	return if type of icon then icon[type] else "img/unknown.png"
 		
-model = (ActiveRecord, $rootScope, $upload, platform) ->
+model = (ActiveRecord, $rootScope, platform) ->
 	
 	class Model extends ActiveRecord
 		constructor: (attrs = {}, opts = {}) ->
@@ -120,75 +120,6 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 			
 		@me: ->
 			(new User(username: 'me/')).$fetch()	
-			
-	class File extends PageableCollection
-		$idAttribute: 'path'
-	
-		$urlRoot: "#{env.serverUrl()}/api/file/"
-			
-		constructor: (attrs = {}, opts = {}) ->
-			_.extend @, attrs
-			@isdir = /\/$/.test @path
-			super([], opts)
-			
-		$parseModel: (res, opts) ->
-			res.selected = false
-			res.atime = new Date(Date.parse(res.atime))
-			res.ctime = new Date(Date.parse(res.ctime))
-			res.mtime = new Date(Date.parse(res.mtime))
-			res.iconUrl = iconUrl(res.contentType) 
-			res.url = if env.isNative() then "#{env.serverUrl()}/api/file/content/#{res.path}" else "#{env.serverUrl()}/#{res.path}"
-			return new File res
-						
-		$parse: (res, opts) ->
-			_.each res.results, (value, key) =>
-				res.results[key] = @$parseModel(res.results[key], opts)
-			return @$parseModel(res, opts)
-			
-		$isNew: ->
-			not @_id?
-			
-		toggleSelect: ->
-			@selected = not @selected
-			$rootScope.$broadcast 'mode:select'	
-		
-		open: ->
-			platform.open @
-			
-		nselected: ->
-			(_.where @models, selected: true).length
-					
-		$fetch: (opts) ->
-			new Promise (fulfill, reject) =>
-				fetch = =>
-					if @isdir
-						super(opts).then fulfill, reject
-					else
-						fulfill @
-				if _.isEmpty @path or _.isNull @path or _.isUndefined @path
-					User.me()
-						.then (user) =>
-							@path = "#{user.username}/"
-							@isdir = true
-							fetch()
-						.catch reject
-				else
-					fetch()
-	
-		$sync: (op, model, opts) ->
-			if op in ['create', 'update']
-				crudMapping =
-					create:		'POST'
-					read:		'GET'
-					update:		'PUT'
-					"delete":	'DELETE'
-				$upload.upload
-					url:	if op == 'create' then @$urlRoot else @$url()
-					method:	crudMapping[op]
-					fields:	_.pick model, 'name', 'path', 'tags', '__v'
-					file:	model.file
-			else
-				super(op, model, opts)
 			
 	class Permission extends Model
 		$idAttribute: '_id'
@@ -332,6 +263,6 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 config = ->
 	return
 	
-angular.module('starter.model', ['ionic', 'ActiveRecord', 'angularFileUpload']).config [config]
+angular.module('starter.model', ['ionic', 'ActiveRecord']).config [config]
 
-angular.module('starter.model').factory 'model', ['ActiveRecord', '$rootScope', '$upload', 'platform', model]
+angular.module('starter.model').factory 'model', ['ActiveRecord', '$rootScope', 'platform', model]

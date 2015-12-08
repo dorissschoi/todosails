@@ -1,11 +1,10 @@
 env = require './env.coffee'
 
-module = angular.module('starter', ['ionic', 'util.auth', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'angularFileUpload', 'ngTouch', 'ngAnimate', 'ionic-datepicker', 'ionic-timepicker', 'pascalprecht.translate', 'locale'])
+module = angular.module('starter', ['ionic', 'util.auth', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'ngTouch', 'ngAnimate', 'ionic-datepicker', 'ionic-timepicker', 'pascalprecht.translate', 'locale'])
 
 module
 .run (authService) ->
 	authService.login env.oauth2.opts
-	
         
 .run ($rootScope, platform, $ionicPlatform, $location, $http) ->
 	$ionicPlatform.ready ->
@@ -13,28 +12,6 @@ module
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true)
 		if (window.StatusBar)
 			StatusBar.styleDefault()
-			
-			
-	  	#$cordovaPlugin.someFunction().then(success, error);
-	###		
-	
-	# set authorization header once browser authentication completed
-	if $location.url().match /access_token/
-			data = $.deparam $location.url().split("/")[1]
-			$http.defaults.headers.common.Authorization = "Bearer #{data.access_token}"
-			authService.loginConfirmed()
-	
-	# set authorization header once mobile authentication completed
-	fulfill = (data) ->
-		if data?
-			$http.defaults.headers.common.Authorization = "Bearer #{data.access_token}"
-			authService.loginConfirmed()
-	
-	$rootScope.$on 'event:auth-forbidden', ->
-		platform.auth().then fulfill, alert
-	$rootScope.$on 'event:auth-loginRequired', ->
-		platform.auth().then fulfill, alert
-	###
 					
 .config ($stateProvider, $urlRouterProvider, $translateProvider) ->
 
