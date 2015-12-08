@@ -1,0 +1,50 @@
+<ion-view >
+  <form name="myForm" class="my-form">
+  <ion-header-bar>
+
+    	<button class="button ion-close-round" ng-click="button=true;controller.backpage();"
+    	></button>
+    	<h1 class="title">{{'edittask' | translate}}</h1>
+    	<button class="button button-clear button-positive" 
+    	ng-click="button=true;controller.update();"
+    	ng-disabled="myForm.taskname.$error.required" 
+    	ng-hide="button"
+    	>Save</button>
+  </ion-header-bar>
+  <ion-content padding="true">
+	<div class="list">
+		<label class="item item-input">
+	  		<input type="text" placeholder="Project..." ng-model="model.newproject">
+	  	</label>
+	  	<label class="item item-input">
+	  		<input type="text" ng-model="model.newtask" ng-disabled="button" 
+			 required name="taskname">
+	  	</label>
+	  	<label class="item item-input">
+	  		<input type="text" placeholder="Notes..." ng-model="model.newnotes">
+	  	</label>
+	  	<label class="item item-input">
+	  		<input type="text" placeholder="Location..." ng-model="model.newlocation">
+	  	</label>
+	  			
+		<div class="row">
+			<div class="col col-50"><span class="input-label">Date</span>
+				<ionic-datepicker input-obj="datepickerObjectEnd">
+		  			<button class="button button-block button-positive"> 
+		  			{{datepickerObjectEnd.inputDate | date:'dd - MMMM - yyyy'}}</button>
+				</ionic-datepicker>			
+			</div>
+			<div class="col"><span class="input-label">Time</span>
+				<ionic-timepicker input-obj="timePickerEndObject">
+				  <button class="button button-block button-positive overflowShow">
+   					<standard-time-meridian etime='timePickerEndObject.inputEpochTime'></standard-time-meridian>
+				  </button>
+				</ionic-timepicker>				
+			</div>				  
+	  	</div>
+	  	
+			  	
+	</div>	    	
+  </ion-content>
+  </form>
+</ion-view>

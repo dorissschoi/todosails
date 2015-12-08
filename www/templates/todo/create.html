@@ -1,0 +1,53 @@
+<ion-view>
+	<div ng-controller="TodoCtrl">
+	<form name="myForm"  class="my-form">
+	<ion-header-bar class="item-input-inset" align-title="left">
+	    <button class="button ion-close-round" ui-sref="app.todayList"></button>
+	    <div class="buttons" ng-init="isDisabled = false">
+			<h1 class="title">{{'addtask' | translate}}</h1>
+			<button class="button button-clear button-positive" 
+    		ng-click="controller.add()"
+    		ng-disabled="myForm.taskname.$error.required">Save</button>	        
+	    </div>
+	</ion-header-bar>
+	
+	<ion-content>
+
+		<div class="list">
+			<label class="item item-input">
+				<input type="text" placeholder="Project..." name="location" ng-model="todo.project" >
+			</label>
+			<label class="item item-input">
+				<input type="text" placeholder="Task name..." name="taskname" ng-model="todo.task" required>
+			</label>
+			<label class="item item-input">
+				<input type="text" placeholder="Notes..." name="location" ng-model="todo.notes" >
+			</label>
+			<label class="item item-input">
+				<input type="text" placeholder="Location..." name="location" ng-model="todo.location" >
+			</label>
+			
+			<div class="row">
+				<div class="col col-50"><span class="input-label">Date</span>
+					<ionic-datepicker input-obj="datepickerObjectEnd">
+		  			<button class="button button-block button-positive"> 
+		  			{{datepickerObjectEnd.date | date:'dd - MMMM - yyyy'}}</button>
+					</ionic-datepicker>		
+				</div>
+				<div class="col"><span class="input-label">Time</span>
+
+					<ionic-timepicker input-obj="timePickerEndObject">
+					  <button class="button button-block button-positive overflowShow">
+    					<standard-time-meridian etime='timePickerEndObject.inputEpochTime'></standard-time-meridian>
+					  </button>
+					</ionic-timepicker>
+
+				</div>
+			</div>
+			
+		</div>
+		
+	</ion-content>
+	</form>
+	</div>
+</ion-view>
