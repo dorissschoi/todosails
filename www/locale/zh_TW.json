@@ -1,8 +1,8 @@
 {
-    "next7dlist":	"7天項目",
-    "compledlist":	"已完成項目",
-    "addtask":		"添加項目",
-    "edittask":		"編輯項目",
+    "next7dlist":	"7天待辦事項清單",
+    "compledlist":	"已完成任務清單",
+    "addtask":		"添加任務",
+    "edittask":		"編輯任務",
     "menu":			"菜單",
     "noschedule":	"沒有時間表",
 	"Mon":			"週一",
@@ -15,5 +15,14 @@
 	"Today":		"今天",
 	"Tomorrow":		"明天",
 	"days before":	"日前",
-	"Search":		"搜尋"
+	"Search":		"搜尋",
+	"Project":		"項目",
+	"TaskName":		"任務",
+	"Location":		"地點",
+	"Notes":		"備註",
+	"Time":			"時間",
+	"Date":			"到期日",
+	"Close":		"關閉",
+	"SetDate":		"設定日期",
+	"SetTime":		"設定時間"	
 }

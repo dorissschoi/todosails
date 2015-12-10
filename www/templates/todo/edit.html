@@ -1,5 +1,5 @@
 <ion-view >
-  <form name="myForm" class="my-form">
+  <form name="myForm" class="my-form" novalidate>
   <ion-header-bar>
 
     	<button class="button ion-close-round" ng-click="button=true;controller.backpage();"
@@ -14,27 +14,27 @@
   <ion-content padding="true">
 	<div class="list">
 		<label class="item item-input">
-	  		<input type="text" placeholder="Project..." ng-model="model.newproject">
+	  		<input type="text" placeholder="{{'Project' | translate}}" ng-model="model.newproject">
 	  	</label>
 	  	<label class="item item-input">
 	  		<input type="text" ng-model="model.newtask" ng-disabled="button" 
-			 required name="taskname">
+			 placeholder="{{'TaskName' | translate}}" required name="taskname">
 	  	</label>
 	  	<label class="item item-input">
-	  		<input type="text" placeholder="Notes..." ng-model="model.newnotes">
+	  		<input type="text" placeholder="{{'Notes' | translate}}" ng-model="model.newnotes">
 	  	</label>
 	  	<label class="item item-input">
-	  		<input type="text" placeholder="Location..." ng-model="model.newlocation">
+	  		<input type="text" placeholder="{{'Location' | translate}}" ng-model="model.newlocation">
 	  	</label>
 	  			
 		<div class="row">
-			<div class="col col-50"><span class="input-label">Date</span>
+			<div class="col col-50"><span class="input-label">{{'Date' | translate}}</span>
 				<ionic-datepicker input-obj="datepickerObjectEnd">
 		  			<button class="button button-block button-positive"> 
 		  			{{datepickerObjectEnd.inputDate | date:'dd - MMMM - yyyy'}}</button>
 				</ionic-datepicker>			
 			</div>
-			<div class="col"><span class="input-label">Time</span>
+			<div class="col"><span class="input-label">{{'Time' | translate}}</span>
 				<ionic-timepicker input-obj="timePickerEndObject">
 				  <button class="button button-block button-positive overflowShow">
    					<standard-time-meridian etime='timePickerEndObject.inputEpochTime'></standard-time-meridian>

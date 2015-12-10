@@ -15,5 +15,14 @@
 	"Today":			"Today",
 	"Tomorrow":			"Tomorrow",
 	"days before": 		"days before",
-	"Search":			"Search"
+	"Search":			"Search",
+	"Project":			"Project",
+	"TaskName":			"Task name",
+	"Location":			"Location",
+	"Notes":			"Notes",
+	"Time":				"Time",
+	"Date":				"Date",
+	"Close":			"Close",
+	"SetDate":			"SetDate",
+	"SetTime":			"SetTime"		
 }

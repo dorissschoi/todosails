@@ -1,12 +1,10 @@
 env = require './env.coffee'
 
-
-	
 MenuCtrl = ($scope) ->
 	$scope.env = env
 	$scope.navigator = navigator
 					
-TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter) ->
+TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter, $translate) ->
 	class TodoEditView  			
 
 		constructor: (opts = {}) ->
@@ -36,7 +34,6 @@ TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $fil
 				$state.go $rootScope.URL, {}, { reload: true }
 			else	
 				$state.go $stateParams.backpage, {}, { reload: true }
-			
 	
 	$scope.model = $stateParams.SelectedTodo
 	$scope.model.newtask = $scope.model.task
@@ -52,7 +49,10 @@ TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $fil
 		#$scope.model.dateEnd = currDate
 		
 	$scope.datepickerObjectEnd = {
-		titleLabel: 'end date',
+		titleLabel:  $translate.instant('Date'),
+		todayLabel: $translate.instant('Today'),
+		closeLabel: $translate.instant('Close'),
+		setLabel: $translate.instant('SetDate'),		
 		inputDate: newdate,
 		callback: (val) ->
 			$scope.datePickerEndCallback(val)
@@ -78,7 +78,9 @@ TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $fil
 		inputEpochTime: newtime,  
 		step: 30,  
 		format: 12,  
-		titleLabel: 'end time',  
+		titleLabel: $translate.instant('Time'),
+		setLabel: $translate.instant('SetTime'),
+		closeLabel: $translate.instant('Close'),    
 		callback: (val) ->   
 			$scope.timePickernewEndCallback(val)
 	}	
@@ -90,7 +92,7 @@ TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $fil
 		
 	$scope.controller = new TodoEditView model: $scope.model
 	
-TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter) ->
+TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter, $translate) ->
 	class TodoView  			
 
 		constructor: (opts = {}) ->
@@ -123,8 +125,11 @@ TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter)
 	# ionic-datepicker 0.9
 	$scope.currDate = new Date
 	$scope.datepickerObjectEnd = {
-		titleLabel: 'end date',
-		inputDate: null,
+		titleLabel:  $translate.instant('Date'),
+		todayLabel: $translate.instant('Today'),
+		closeLabel: $translate.instant('Close'),
+		setLabel: $translate.instant('SetDate'),
+		inputDate: null,		
 		callback: (val) ->
 			$scope.datePickerEndCallback(val)
 	}	
@@ -147,7 +152,9 @@ TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter)
 		inputEpochTime: null,  
 		step: 30,  
 		format: 12,  
-		titleLabel: 'end time',  
+		titleLabel: $translate.instant('Time'),
+		setLabel: $translate.instant('SetTime'),
+		closeLabel: $translate.instant('Close'), 
 		callback: (val) ->   
 			$scope.timePickerEndCallback(val)
 	}	
@@ -157,7 +164,6 @@ TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter)
 		else 	
 			$scope.timePickerEndObject.inputEpochTime = val
 		return
-
 			
 MyTodoListPageCtrl = ($rootScope, $scope, $state, $stateParams, $location, model) ->
 	class MyTodoListPageView
@@ -180,9 +186,6 @@ MyTodoListPageCtrl = ($rootScope, $scope, $state, $stateParams, $location, model
 		$scope.$apply ->	
 			$scope.controller = new MyTodoListPageView collection: $scope.collection
 		
-
-
-
 TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, model) ->
 	class TodayListView
 		constructor: (opts = {}) ->
@@ -193,7 +196,9 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 		remove: (todo) ->
 			todo._id = todo.id 
 			@collection.remove(todo)
-			$state.go($state.current, {}, { reload: true })	
+			$scope.$watchCollection 'collection', ->
+				$state.go($state.current, {}, { reload: true })
+			#$state.go($state.current, {}, { reload: true })	
 			
 		read: (selectedModel) ->
 			$state.go 'app.readTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
@@ -299,7 +304,9 @@ CompletedListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filte
 		remove: (todo) ->
 			todo._id = todo.id 		
 			@collection.remove(todo)
-			$state.go($state.current, {}, { reload: true })	
+			$scope.$watchCollection 'collection', ->
+				$state.go($state.current, {}, { reload: true })
+			#$state.go($state.current, {}, { reload: true })	
 			
 		read: (selectedModel) ->
 			$state.go 'app.readTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
@@ -447,11 +454,10 @@ angular.module('starter.controller', [ 'ionic', 'http-auth-interceptor', 'ngCord
 	
 angular.module('starter.controller').controller 'MenuCtrl', ['$scope', MenuCtrl]
 
-angular.module('starter.controller').controller 'TodoEditCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', '$filter', TodoEditCtrl]
-angular.module('starter.controller').controller 'TodoCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', '$filter', TodoCtrl]
+angular.module('starter.controller').controller 'TodoEditCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', '$filter', '$translate', TodoEditCtrl]
+angular.module('starter.controller').controller 'TodoCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', '$filter', '$translate', TodoCtrl]
 
 angular.module('starter.controller').controller 'MyTodoListPageCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', MyTodoListPageCtrl]
-
 
 angular.module('starter.controller').controller 'TodayListCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$filter', 'model', TodayListCtrl]
 angular.module('starter.controller').controller 'CompletedListCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$filter', 'model', CompletedListCtrl]

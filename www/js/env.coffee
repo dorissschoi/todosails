@@ -14,8 +14,8 @@ module.exports =
 		"https://mob.myvnc.com/im"
 	serverUrl: (path = @path) ->
 		#"http://localhost:3000/#{path}"
-		"http://localhost:1337/#{path}"
-		#"https://mppsrc.ogcio.hksarg/#{path}"
+		#"http://localhost:1337/#{path}"
+		"http://localhost:1337"
 	path: 'todo'		
 	oauth2:
 		authUrl: "#{@authUrl}/org/oauth2/authorize/"

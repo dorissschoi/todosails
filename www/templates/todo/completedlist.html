@@ -9,24 +9,28 @@
 
 
 <ion-content >
-        <label class=" item-input">
-		    <i class="icon ion-search placeholder-icon"></i>
-		    <input type="search" placeholder="{{'Search' | translate}}" ng-model="search.task">
-		</label>
-      <ion-list>
-        <div class="item item-divider font17 font-bold" >{{'noschedule' | translate}}</div>
+	<label class=" item-input">
+	    <i class="icon ion-search placeholder-icon"></i>
+	    <input type="search" placeholder="{{'Search' | translate}}" ng-model="search.task">
+	</label>
+    <ion-list>
+    	
+    	<div ng-show="groupTodoA.length" class="item item-divider font17 font-bold" >{{'noschedule' | translate}}</div>
+    	
+    	
 		<div ng-repeat="model in groupTodoA | filter:search">
+			
 			<ion-item class="item-stable"
                     ng-click="toggleGroup(model)"
                     ng-class="{active: isGroupShown(model)}">
               <div class='row'>
 	            <div class="col-10"><i class="icon" ng-class="isGroupShown(model) ? 'ion-compose' : ''"></i></div>
 	            <div class="col-50">{{model.task}} </div>
-	            <div class="col-40">Project: {{model.project}}</div>
+	            <div class="col-40">{{'Project' | translate}}: {{model.project}}</div>
             </div>
           </ion-item>
           <div class="item-accordion" ng-show="isGroupShown(model)">
-	            <button style="width: 30%;" class="button ion-checkmark-round button-clear" on-tap="$event.stopPropagation(); controller.setComplete(model);"></button> 
+	            <button style="width: 30%;" class="button ion-checkmark-round button-clear" on-tap="$event.stopPropagation(); controller.setUnComplete(model);"></button> 
 	            <button style="width: 30%;" class="button ion-edit button-clear" on-tap="$event.stopPropagation(); controller.edit(model);"></button> 
 	            <button style="width: 30%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
           </div>
@@ -41,7 +45,7 @@
 	              <div class='row'>
 	            <div class="col-10"><i class="icon" ng-class="isGroupShown(model) ? 'ion-compose' : ''"></i></div>
 	            <div class="col-50">{{model.task}} </div>
-	            <div class="col-40">Project: {{model.project}}</div>
+	            <div class="col-40">{{'Project' | translate}}: {{model.project}}</div>
 	            </div>
 	            
 	          </ion-item>
@@ -52,10 +56,9 @@
 	          </div>
 			</div>
         </div>
-      </ion-list>
-
+    </ion-list>
 		
-<ion-infinite-scroll
+	<ion-infinite-scroll
 	 ng-if="collection.state.page < collection.state.total_page" on-infinite="loadMore()">
-		</ion-infinite-scroll>			
+	</ion-infinite-scroll>			
 </ion-content>

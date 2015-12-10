@@ -77,9 +77,9 @@ module.exports =
 		fulfill = (result) ->
 			if sails.config.im.sendmsg
 				fulfillmsg = (result) ->
-					#sails.log "sendMsg fulfill"	
+					sails.log "sendMsg fulfill"	
 				rejectmsg = (err) ->
-					sails.log "sendMsg reject"
+					sails.log "sendMsg reject: " + err
 				#send msg	
 				sendMsg(values, result.body.access_token).then fulfillmsg, rejectmsg
 			else 	
