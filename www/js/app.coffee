@@ -19,15 +19,6 @@ module
 		url: ""
 		abstract: true
 		templateUrl: "templates/menu.html"
-	
-    # My todo list page
-	$stateProvider.state 'app.mytodopage',
-		url: "/todo/mytodopage"
-		cache: false
-		views:
-			'menuContent':
-				templateUrl: "templates/todo/mylistpage.html"
-				controller: 'MyTodoListPageCtrl'
 
 	$stateProvider.state 'app.createTodo',
 		url: "/todo/create"
@@ -44,7 +35,8 @@ module
 		views:
 			'menuContent':
 				templateUrl: "templates/todo/read.html"
-				controller: 'TodoReadCtrl'
+				#controller: 'TodoReadCtrl'
+				controller: 'TodoEditCtrl'
 				
 	$stateProvider.state 'app.editTodo',
 		url: "/todo/edit"

@@ -3,6 +3,8 @@
     "compledlist":		"Completed list",
     "addtask":			"Create task",
     "edittask":			"Edit task",
+    "readtask":			"Read task",
+    "save":				"Save",
     "menu":				"Menu",
     "noschedule":		"No schedule",
 	"Mon":				"Mon",

@@ -74,20 +74,6 @@ span.input-label {
 }
 
 
-
-/* angular bootstrap calendar */
-.cal-month-day .cal-events-num {
-    display: none;
-}
-.cal-day-panel .row {
-	margin-left: 0px;
-	padding: 0px;
-}
-.cal-row-fluid.cal-row-head {
-	padding-left: 15px;
-	padding-right: 15px;
-}
-
 /* ionic datepicker */
 .ionic-datepicker .row {
     margin-left: 0px;
@@ -148,11 +134,6 @@ span.input-label {
   display: block !important;
 }
 
-/*day view*/
-.tblday {
-	width: 100%;
-	margin: 20px
-}
 
 /*self calendar*/
 .wbkt.wk-scrolltimedevents {

@@ -67,6 +67,7 @@ module.exports =
 
 		createdBy:
 			type: 'string'
+			required:	true
 
 		ownedBy:
 			type: 'string'

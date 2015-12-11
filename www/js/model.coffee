@@ -44,7 +44,7 @@ model = (ActiveRecord, $rootScope, platform) ->
 				if not @contains item 
 					@models.push item
 					@length++
-				
+		###		
 		remove: (models, opts = {}) ->
 			singular = not _.isArray(models)
 			if singular and models?
@@ -54,7 +54,20 @@ model = (ActiveRecord, $rootScope, platform) ->
 					@models = _.filter @models, (item) =>
 						item[@$idAttribute] != model[@$idAttribute]
 			@length = @models.length
-				
+		###
+		remove: (models, opts = {}) ->
+			return new Promise (fulfill, reject) =>
+				singular = not _.isArray(models)
+				if singular and models?
+					models = [models]
+				_.each models, (model) =>
+						model.$destroy().then =>
+							@models = _.filter @models, (item) =>
+								item[@$idAttribute] != model[@$idAttribute]
+							fulfill @models 
+				@length = @models.length
+						
+					
 		contains: (model) ->
 			cond = (a, b) ->
 				a == b
@@ -70,8 +83,8 @@ model = (ActiveRecord, $rootScope, platform) ->
 				@$sync('read', @, opts)
 					.then (res) =>
 						data = @$parse(res.data, opts)
-						if _.isArray data.results
-							@add data.results
+						if _.isArray data
+							@add data
 							fulfill @
 						else
 							reject 'Not a valid response type'
@@ -81,8 +94,8 @@ model = (ActiveRecord, $rootScope, platform) ->
 		constructor: (models = [], opts = {}) ->
 			@state =
 				count:		0
-				page:		0
-				per_page:	10
+				skip:		0
+				limit:		10
 				total_page:	0
 			super(models, opts)
 				
@@ -94,20 +107,19 @@ model = (ActiveRecord, $rootScope, platform) ->
 		###
 		$fetch: (opts = {}) ->
 			opts.params = opts.params || {}
-			opts.params.page = @state.page + 1
-			opts.params.per_page = opts.params.per_page || @state.per_page
+			opts.params.skip = @state.skip
+			opts.params.limit = opts.params.limit || @state.limit
 			return new Promise (fulfill, reject) =>
 				@$sync('read', @, opts)
 					.then (res) =>
 						data = @$parse(res.data, opts)
 						if data.count? and data.results?
 							@add data.results
-							@models = _.union(@models, data.results)
 							@state = _.extend @state,
 								count:		data.count
-								page:		opts.params.page
-								per_page:	opts.params.per_page
-								total_page:	Math.ceil(data.count / opts.params.per_page)
+								skip:		opts.params.skip + data.results.length
+								limit:		opts.params.limit
+								total_page:	Math.ceil(data.count / opts.params.limit)
 							fulfill @
 						else
 							reject 'Not a valid response type'
@@ -176,7 +188,7 @@ model = (ActiveRecord, $rootScope, platform) ->
 
 
 	class Todo extends Model
-		$idAttribute: '_id'
+		$idAttribute: 'id'
 		
 		$urlRoot: "#{env.serverUrl()}/api/todo/"
 		#$urlRoot: "http://localhost:1337/todo/api/todo/"
@@ -189,47 +201,10 @@ model = (ActiveRecord, $rootScope, platform) ->
 				return new Promise (fulfill, reject) ->
 					fulfill @		
 		
-	class MyTodoList extends PageableCollection
-		$idAttribute: '_id'
-	
-		$urlRoot: "#{env.serverUrl()}/api/mytodopage"
-		#$urlRoot: "http://localhost:1337/todo/api/todo/"
-		
-		
-		$parseModel: (res, opts) ->
-			if !_.isNull(res.dateEnd)
-				res.dateEnd = new Date(Date.parse(res.dateEnd))
-			return new Todo res
-	
-		
-		$parse: (res, opts) ->
-			_.each res.results, (value, key) =>
-				#res.results[key] = new Todo res.results[key]
-				res.results[key] = @$parseModel(res.results[key], opts)
-			return res
-
-
-	# UpcomingList
-	class UpcomingList extends PageableCollection
-		$idAttribute: '_id'
-	
-		$urlRoot: "#{env.serverUrl()}/api/myupcomingtodo"
-		#$urlRoot: "http://localhost:1337/todo/api/todo/"
-		
-			
-		$parseModel: (res, opts) ->
-			if !_.isNull(res.dateEnd)
-				res.dateEnd = new Date(Date.parse(res.dateEnd))
-			return new Todo res
-			
-		$parse: (res, opts) ->
-			_.each res.results, (value, key) =>
-				res.results[key] = @$parseModel(res.results[key], opts)
-			return res
 
 	# TodayList
 	class TodayList extends PageableCollection
-		$idAttribute: '_id'
+		$idAttribute: 'id'
 	
 		$urlRoot: "#{env.serverUrl()}/api/todo"
 		#$urlRoot: "http://localhost:1337/todo/api/todo/"
@@ -256,8 +231,6 @@ model = (ActiveRecord, $rootScope, platform) ->
 	UserGrps:	UserGrps
 	FileGrps:	FileGrps
 	Todo:		Todo
-	MyTodoList:	MyTodoList
-	UpcomingList:	UpcomingList
 	TodayList:	TodayList
 				
 config = ->

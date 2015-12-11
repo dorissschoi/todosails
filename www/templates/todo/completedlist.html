@@ -30,9 +30,10 @@
             </div>
           </ion-item>
           <div class="item-accordion" ng-show="isGroupShown(model)">
-	            <button style="width: 30%;" class="button ion-checkmark-round button-clear" on-tap="$event.stopPropagation(); controller.setUnComplete(model);"></button> 
-	            <button style="width: 30%;" class="button ion-edit button-clear" on-tap="$event.stopPropagation(); controller.edit(model);"></button> 
-	            <button style="width: 30%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
+	            <button style="width: 24%;" class="button ion-close-circled button-clear" on-tap="$event.stopPropagation(); controller.setUnComplete(model);"></button>
+	            <button style="width: 24%;" class="button ion-ios7-paper button-clear" on-tap="$event.stopPropagation(); controller.read(model);"></button> 
+	            <button style="width: 24%;" class="button ion-edit button-clear" on-tap="$event.stopPropagation(); controller.edit(model);"></button> 
+	            <button style="width: 24%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
           </div>
 		</div>
         <div class="daterow" ng-repeat="(edate, lTasks) in groupedByDate | orderBy:['edate']">
@@ -50,15 +51,16 @@
 	            
 	          </ion-item>
 	          <div class="item-accordion" ng-show="isGroupShown(model)">
-	            <button style="width: 30%;" class="button ion-close-circled button-clear" on-tap="$event.stopPropagation(); controller.setUnComplete(model);"></button> 
-	            <button style="width: 30%;" class="button ion-edit button-clear" on-tap="$event.stopPropagation(); controller.edit(model);"></button> 
-	            <button style="width: 30%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
+	            <button style="width: 24%;" class="button ion-close-circled button-clear" on-tap="$event.stopPropagation(); controller.setUnComplete(model);"></button>
+	            <button style="width: 24%;" class="button ion-ios7-paper button-clear" on-tap="$event.stopPropagation(); controller.read(model);"></button> 
+	            <button style="width: 24%;" class="button ion-edit button-clear" on-tap="$event.stopPropagation(); controller.edit(model);"></button> 
+	            <button style="width: 24%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
 	          </div>
 			</div>
         </div>
     </ion-list>
 		
 	<ion-infinite-scroll
-	 ng-if="collection.state.page < collection.state.total_page" on-infinite="loadMore()">
+	 ng-if="collection.state.skip < collection.state.count" on-infinite="loadMore()">
 	</ion-infinite-scroll>			
 </ion-content>

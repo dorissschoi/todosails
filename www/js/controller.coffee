@@ -17,7 +17,6 @@ TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $fil
 			@model.location = $scope.model.newlocation
 			@model.project = $scope.model.newproject
 			@model.notes = $scope.model.newnotes
-			@model._id = $scope.model.id
 
 			if !_.isUndefined($scope.datepickerObjectEnd.inputDate)
 				$scope.model.newdateEnd = $scope.datepickerObjectEnd.inputDate
@@ -28,7 +27,10 @@ TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $fil
 					 
 			@model.$save().then =>
 				$state.go 'app.todayList', {}, { reload: true }
-				
+
+		edit: (selectedModel) ->
+			$state.go 'app.editTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
+							
 		backpage: ->
 			if _.isNull $stateParams.backpage
 				$state.go $rootScope.URL, {}, { reload: true }
@@ -165,26 +167,6 @@ TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter,
 			$scope.timePickerEndObject.inputEpochTime = val
 		return
 			
-MyTodoListPageCtrl = ($rootScope, $scope, $state, $stateParams, $location, model) ->
-	class MyTodoListPageView
-		constructor: (opts = {}) ->
-			_.each @events, (handler, event) =>
-				$scope.$on event, @[handler]
-			@collection = opts.collection
-
-		remove: (todo) ->
-			@model.remove(todo)
-	
-	$scope.loadMore = ->
-		$scope.collection.$fetch()
-			.then ->
-				$scope.$broadcast('scroll.infiniteScrollComplete')
-			.catch alert
-					
-	$scope.collection = new model.MyTodoList()
-	$scope.collection.$fetch().then ->
-		$scope.$apply ->	
-			$scope.controller = new MyTodoListPageView collection: $scope.collection
 		
 TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, model) ->
 	class TodayListView
@@ -194,11 +176,8 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 			@collection = opts.collection
 
 		remove: (todo) ->
-			todo._id = todo.id 
-			@collection.remove(todo)
-			$scope.$watchCollection 'collection', ->
+			@collection.remove(todo).then ->
 				$state.go($state.current, {}, { reload: true })
-			#$state.go($state.current, {}, { reload: true })	
 			
 		read: (selectedModel) ->
 			$state.go 'app.readTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
@@ -209,7 +188,6 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 		setComplete: (selectedModel) ->
 			@model = selectedModel
 			@model.completed = 'true'
-			@model._id = selectedModel.id			
 			@model.$save().then =>
 				$scope.getTodayListView()
 
@@ -256,7 +234,7 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 	  				
 	$scope.getTodayListView = ->
 		$scope.collection = new model.TodayList()
-		$scope.collection.$fetch({params: {toDate: $scope.toDate}}).then ->
+		$scope.collection.$fetch({params: {toDate: $scope.toDate, sort: 'dateEnd ASC'}}).then ->
 			$scope.$apply ->
 				$scope.reorder()
 
@@ -280,7 +258,7 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 				$scope.controller = new TodayListView collection: $scope.collection
 				
 	$scope.loadMore = ->
-		$scope.collection.$fetch({params: {toDate: $scope.toDate}})
+		$scope.collection.$fetch({params: {toDate: $scope.toDate, sort: 'dateEnd ASC'}})
 			.then ->
 				$scope.$broadcast('scroll.infiniteScrollComplete')
 				$scope.$apply ->
@@ -302,11 +280,8 @@ CompletedListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filte
 			@collection = opts.collection
 
 		remove: (todo) ->
-			todo._id = todo.id 		
-			@collection.remove(todo)
-			$scope.$watchCollection 'collection', ->
+			@collection.remove(todo).then ->
 				$state.go($state.current, {}, { reload: true })
-			#$state.go($state.current, {}, { reload: true })	
 			
 		read: (selectedModel) ->
 			$state.go 'app.readTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
@@ -317,7 +292,6 @@ CompletedListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filte
 		setUnComplete: (selectedModel) ->
 			@model = selectedModel
 			@model.completed = 'false'
-			@model._id = selectedModel.id			
 			@model.$save().then =>
 				$scope.getCompletedListView()
 
@@ -365,7 +339,7 @@ CompletedListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filte
 	$scope.getCompletedListView = ->
 		#start
 		$scope.collection = new model.TodayList()
-		$scope.collection.$fetch({params: {completed: Boolean('true'),toDate: $scope.toDate}}).then ->
+		$scope.collection.$fetch({params: {completed: Boolean('true'),toDate: $scope.toDate, sort: 'dateEnd ASC'}}).then ->
 			$scope.$apply ->
 				$scope.reorder()
 		#end		
@@ -390,7 +364,7 @@ CompletedListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filte
 				$scope.controller = new CompletedListView collection: $scope.collection
 				
 	$scope.loadMore = ->
-		$scope.collection.$fetch({params: {completed: Boolean('true'),toDate: $scope.toDate}})
+		$scope.collection.$fetch({params: {completed: Boolean('true'),toDate: $scope.toDate, sort: 'dateEnd ASC'}})
 			.then ->
 				$scope.$broadcast('scroll.infiniteScrollComplete')
 				$scope.$apply ->
@@ -456,8 +430,6 @@ angular.module('starter.controller').controller 'MenuCtrl', ['$scope', MenuCtrl]
 
 angular.module('starter.controller').controller 'TodoEditCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', '$filter', '$translate', TodoEditCtrl]
 angular.module('starter.controller').controller 'TodoCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', '$filter', '$translate', TodoCtrl]
-
-angular.module('starter.controller').controller 'MyTodoListPageCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', MyTodoListPageCtrl]
 
 angular.module('starter.controller').controller 'TodayListCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$filter', 'model', TodayListCtrl]
 angular.module('starter.controller').controller 'CompletedListCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$filter', 'model', CompletedListCtrl]
