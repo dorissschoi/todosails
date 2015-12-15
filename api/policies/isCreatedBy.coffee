@@ -11,7 +11,7 @@ module.exports = (req, res, next) ->
 		
 	cond = 
 			id:			pk
-			ownedBy:	req.user.username
+			createdBy:	req.user.username
 	Model.findOne()
 		.where( cond )
 		.exec (err, data) ->

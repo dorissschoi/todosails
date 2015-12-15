@@ -8,10 +8,26 @@ module.exports = (req, res, next) ->
 	pk = actionUtil.requirePk(req)
 	if model == 'user' and pk == req.user.username
 		return next()
-		
+	
+	###	
 	cond = 
 			id:			pk
-			ownedBy:	req.user.username
+			createdBy:	req.user.username
+	###
+	cond =
+		or: [
+			{
+				id:			pk
+				createdBy:	req.user.username
+			}
+			{
+				id:			pk
+				ownedBy:	req.user.username
+			}
+		]
+	
+	#sails.log "isOwnerOrCreatedBy cond: " + JSON.stringify cond 
+				
 	Model.findOne()
 		.where( cond )
 		.exec (err, data) ->
@@ -20,3 +36,4 @@ module.exports = (req, res, next) ->
 			if data
 				return next()
 			res.notFound()
+	

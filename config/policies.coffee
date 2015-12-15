@@ -4,6 +4,6 @@ module.exports =
 		TodoController:
 			'*':	false
 			find:	['isAuth', 'todo/setTask']	
-			create: ['isAuth', 'setOwner' ]
-			update: ['isAuth']
-			destroy: ['isAuth']
+			create: ['isAuth', 'setCreatedBy' , 'setOwner']
+			update: ['isAuth', 'isOwnerOrCreatedBy']
+			destroy: ['isAuth', 'isCreatedBy']

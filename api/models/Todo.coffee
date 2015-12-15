@@ -63,7 +63,8 @@ module.exports =
 			defaultsTo: false
 
 		dateEnd:
-			type: 'date'
+			type: 'datetime'
+			defaultsTo: null
 
 		createdBy:
 			type: 'string'
@@ -71,6 +72,7 @@ module.exports =
 
 		ownedBy:
 			type: 'string'
+			required:	true
 				  
 	afterCreate: (values, cb) ->
 		

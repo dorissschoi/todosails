@@ -14,17 +14,24 @@ module.exports = (req, res, next) ->
 						'$lte': dateEnd
 					}
 					completed: false
+					ownedBy: req.user.username 
 				}
 				{
 					dateEnd: null
 					completed: false
+					ownedBy: req.user.username
 				}
 			]
 
 	if !_.isUndefined(completed)
 		cond =
-			completed: true
+			{
+				completed: true
+				ownedBy: req.user.username
+			}
 	 
+	
+	#sails.log "cond: " + JSON.stringify cond 
 	req.options.criteria = req.options.criteria || {}
 	#req.options.criteria.blacklist = req.options.criteria.blacklist || [ 'limit', 'skip', 'sort', 'populate', 'to', 'toDate', 'page', 'per_page']
 	req.options.criteria.blacklist = req.options.criteria.blacklist || [ 'populate', 'to', 'toDate', 'page', 'per_page']

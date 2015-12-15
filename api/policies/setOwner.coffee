@@ -1,4 +1,9 @@
 module.exports = (req, res, next) ->
 	req.options.values = req.options.values || {}
-	req.options.values.createdBy = req.user.username
+
+	if _.isUndefined(req.body.ownedBy)
+		req.options.values.ownedBy = req.user.username
+		
+	#sails.log "req.options.values.ownedBy: " + req.options.values.ownedBy
+			
 	next()
