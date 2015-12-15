@@ -3,22 +3,27 @@ todosails
 
 Server API Testing
 ==================
-create
+create 
+1) login user create task, ownedBy eq to createdBy, dateEnd default to null, can update and del
 ```
-curl -X POST -H "Authorization:Bearer xxx" --data "task=111&ownedBy=dorissschoi"  "http://localhost:1337/todo/api/todo/"
+curl -X POST -H "Authorization:Bearer xxx" --data "task=ABC"  "http://localhost:1337/api/todo/"
+```
+2) system create task, specific ownedBy username, dateEnd default to null, ownedBy user can update only
+```
+curl -X POST -H "Authorization:Bearer xxx" --data "task=111&ownedBy=dorissschoi"  "http://localhost:1337/api/todo/"
 ```
 list 7 days task, completed task
 ```
 curl -X GET -H "Authorization:Bearer xxx" "http://localhost:1337/todo/api/todo/?page=1&per_page=10&toDate=2016-12-29T15:59:00.000Z"
-curl -X GET -H "Authorization:Bearer xxx" "http://localhost:1337/todo/api/todo/?completed=true&page=1&per_page=10"
+curl -X GET -H "Authorization:Bearer xxx" "http://localhost:1337/api/todo/?completed=true&page=1&per_page=10"
 ```
 update
 ```
-curl -X PUT -H "Authorization:Bearer xxx" --data "completed=true&task=00123&project=B&dateEnd=2015-11-16T02:00:00.000Z" "http://localhost:1337/todo/api/todo/xxx"
+curl -X PUT -H "Authorization:Bearer xxx" --data "completed=true&task=00123&project=B&dateEnd=2015-11-16T02:00:00.000Z" "http://localhost:1337/api/todo/xxx"
 ```
 delete
 ```
-curl -X DELETE -H "Authorization:Bearer xxx" "http://localhost:1337/todo/api/todo/xxx"
+curl -X DELETE -H "Authorization:Bearer xxx" "http://localhost:1337/api/todo/xxx"
 ```
 
 Configuration
