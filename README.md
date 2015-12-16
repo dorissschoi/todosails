@@ -17,11 +17,11 @@ list
 
 1) list no schedule, uncompleted, within 7 days task, completed task ownedBy login user
 ```
-curl -X GET -H "Authorization:Bearer xxx" "http://localhost:1337/api/todo/?page=1&per_page=10&toDate=2016-12-29T15:59:00.000Z"
+curl -X GET -H "Authorization:Bearer xxx" "http://localhost:1337/api/todo?limit=10&skip=0&sort=dateEnd+ASC&toDate=2015-12-21T15:59:59.999Z"
 ```
 2) list no schedule completed ownedBy login user
 ```
-curl -X GET -H "Authorization:Bearer xxx" "http://localhost:1337/api/todo/?completed=true&page=1&per_page=10"
+curl -X GET -H "Authorization:Bearer xxx" "http://localhost:1337/api/todo?completed=true&limit=10&skip=0&sort=dateEnd+ASC"
 ```
 update task by createdBy user or ownedBy user can update
 ```
