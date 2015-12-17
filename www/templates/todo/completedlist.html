@@ -33,7 +33,7 @@
 	            <button style="width: 24%;" class="button ion-close-circled button-clear" on-tap="$event.stopPropagation(); controller.setUnComplete(model);"></button>
 	            <button style="width: 24%;" class="button ion-ios7-paper button-clear" on-tap="$event.stopPropagation(); controller.read(model);"></button> 
 	            <button style="width: 24%;" class="button ion-edit button-clear" on-tap="$event.stopPropagation(); controller.edit(model);"></button> 
-	            <button ng-show=" {{model.createdBy==model.ownedBy}}" style="width: 24%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
+	            <button ng-show=" {{model.createdBy==model.username}}" style="width: 24%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
           </div>
 		</div>
         <div class="daterow" ng-repeat="(edate, lTasks) in groupedByDate | orderBy:['edate']">
@@ -54,7 +54,7 @@
 	            <button style="width: 24%;" class="button ion-close-circled button-clear" on-tap="$event.stopPropagation(); controller.setUnComplete(model);"></button>
 	            <button style="width: 24%;" class="button ion-ios7-paper button-clear" on-tap="$event.stopPropagation(); controller.read(model);"></button> 
 	            <button style="width: 24%;" class="button ion-edit button-clear" on-tap="$event.stopPropagation(); controller.edit(model);"></button> 
-	            <button ng-show=" {{model.createdBy==model.ownedBy}}" style="width: 24%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
+	            <button ng-show=" {{model.createdBy==model.username}}" style="width: 24%;" class="button ion-trash-a button-clear" on-tap="$event.stopPropagation(); controller.remove(model);"></button>
 	          </div>
 			</div>
         </div>

@@ -210,14 +210,15 @@ model = (ActiveRecord, $rootScope, platform) ->
 		#$urlRoot: "http://localhost:1337/todo/api/todo/"
 		
 			
-		$parseModel: (res, opts) ->
+		$parseModel: (res, opts, username) ->
 			if !_.isNull(res.dateEnd)
 				res.dateEnd = new Date(Date.parse(res.dateEnd))
+			res.username = username
 			return new Todo res
 			
 		$parse: (res, opts) ->
 			_.each res.results, (value, key) =>
-				res.results[key] = @$parseModel(res.results[key], opts)
+				res.results[key] = @$parseModel(res.results[key], opts, res.username)
 			return res			
 
 				

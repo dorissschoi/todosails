@@ -8,6 +8,28 @@ module.exports = (req, res, next) ->
 
 	if !_.isUndefined(dateEnd)
 		cond =
+			$and: [
+				{ $or: [
+						{ownedBy: req.user.username},{createdBy: req.user.username}]	
+				}
+				{ $or: [
+						{dateEnd: {$lte: req.query.toDate}},{dateEnd: null}]		
+				}	
+				{ completed: false }
+			]
+			
+	if !_.isUndefined(completed)
+		cond =
+			$and: [
+			
+				{ completed: true}
+				{ $or: [
+						{ownedBy: req.user.username},{createdBy: req.user.username}]	
+				}
+			]				
+	###
+	if !_.isUndefined(dateEnd)
+		cond =
 			or: [
 				{
 					dateEnd:  {
@@ -22,14 +44,14 @@ module.exports = (req, res, next) ->
 					ownedBy: req.user.username
 				}
 			]
-
+	
 	if !_.isUndefined(completed)
 		cond =
 			{
 				completed: true
 				ownedBy: req.user.username
 			}
-	 
+	###	 
 	
 	#sails.log "cond: " + JSON.stringify cond 
 	req.options.criteria = req.options.criteria || {}
