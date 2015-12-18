@@ -76,20 +76,20 @@ module.exports =
 				  
 	afterCreate: (values, cb) ->
 		
-		#get token 		
-		fulfill = (result) ->
-			if sails.config.im.sendmsg
+		if sails.config.im.sendmsg
+			#get token 		
+			fulfill = (result) ->
 				fulfillmsg = (result) ->
 					sails.log "sendMsg fulfill"	
 				rejectmsg = (err) ->
 					sails.log "sendMsg reject: " + err
 				#send msg	
 				sendMsg(values, result.body.access_token).then fulfillmsg, rejectmsg
-			else 	
-				#sails.log "config not send msg"
-		reject = (err) ->
-			sails.log "getToken reject"
-		getToken(values).then fulfill, reject
+			reject = (err) ->
+				sails.log "getToken reject"
+			getToken(values).then fulfill, reject
+		else 	
+			#sails.log "config not send msg"
 		
 		
 		
