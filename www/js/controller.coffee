@@ -26,10 +26,10 @@ TodoEditCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $fil
 			else @model.dateEnd = null
 					 
 			@model.$save().then =>
-				$state.go 'app.todayList', {}, { reload: true }
+				$state.go 'app.weekList', {}, { reload: true }
 
 		edit: (selectedModel) ->
-			$state.go 'app.editTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
+			$state.go 'app.editTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.weekList' }, { reload: true }
 							
 		backpage: ->
 			if _.isNull $stateParams.backpage
@@ -120,7 +120,7 @@ TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter,
 			$scope.todo.dateEnd = null
 			$scope.datepickerObjectEnd.inputDate = null
 			$scope.timePickerEndObject.inputEpochTime = null
-			$state.go 'app.todayList', {}, { reload: true, cache: false }
+			$state.go 'app.weekList', {}, { reload: true, cache: false }
 		
 	$scope.controller = new TodoView model: $scope.model
 	
@@ -168,8 +168,8 @@ TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter,
 		return
 			
 		
-TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, model) ->
-	class TodayListView
+WeekListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, model) ->
+	class WeekListView
 		constructor: (opts = {}) ->
 			_.each @events, (handler, event) =>
 				$scope.$on event, @[handler]
@@ -180,16 +180,16 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 				$state.go($state.current, {}, { reload: true })
 			
 		read: (selectedModel) ->
-			$state.go 'app.readTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
+			$state.go 'app.readTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.weekList' }, { reload: true }
 
 		edit: (selectedModel) ->
-			$state.go 'app.editTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
+			$state.go 'app.editTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.weekList' }, { reload: true }
 
 		setComplete: (selectedModel) ->
 			@model = selectedModel
 			@model.completed = 'true'
 			@model.$save().then =>
-				$scope.getTodayListView()
+				$scope.getWeekListView()
 
 		$scope.formatDate = (inDate, format) ->
 			inDate = new Date(parseInt(inDate))
@@ -232,7 +232,7 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 			$scope.shownGroup = item
 		return
 	  				
-	$scope.getTodayListView = ->
+	$scope.getWeekListView = ->
 		$scope.collection = new model.TodayList()
 		$scope.collection.$fetch({params: {toDate: $scope.toDate, sort: 'dateEnd ASC'}}).then ->
 			$scope.$apply ->
@@ -255,7 +255,7 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 				$scope.groupedByDate = _.groupBy(groupTodo, (item) ->
 					item.edate.setHours(0,0,0,0)
 				)
-				$scope.controller = new TodayListView collection: $scope.collection
+				$scope.controller = new WeekListView collection: $scope.collection
 				
 	$scope.loadMore = ->
 		$scope.collection.$fetch({params: {toDate: $scope.toDate, sort: 'dateEnd ASC'}})
@@ -270,7 +270,7 @@ TodayListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, m
 	$scope.toDate = new Date()
 	$scope.toDate = new Date($scope.toDate.setDate($scope.toDate.getDate()+6))
 	$scope.toDate = new Date($scope.toDate.setHours(23,59,59,999))
-	$scope.getTodayListView()
+	$scope.getWeekListView()
 
 CompletedListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filter, model ) ->
 	class CompletedListView
@@ -284,10 +284,10 @@ CompletedListCtrl = ($rootScope, $scope, $state, $stateParams, $location, $filte
 				$state.go($state.current, {}, { reload: true })
 			
 		read: (selectedModel) ->
-			$state.go 'app.readTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
+			$state.go 'app.readTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.weekList' }, { reload: true }
 
 		edit: (selectedModel) ->
-			$state.go 'app.editTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.todayList' }, { reload: true }
+			$state.go 'app.editTodo', { SelectedTodo: selectedModel, myTodoCol: null, backpage: 'app.weekList' }, { reload: true }
 
 		setUnComplete: (selectedModel) ->
 			@model = selectedModel
@@ -431,7 +431,7 @@ angular.module('starter.controller').controller 'MenuCtrl', ['$scope', MenuCtrl]
 angular.module('starter.controller').controller 'TodoEditCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', '$filter', '$translate', TodoEditCtrl]
 angular.module('starter.controller').controller 'TodoCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', 'model', '$filter', '$translate', TodoCtrl]
 
-angular.module('starter.controller').controller 'TodayListCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$filter', 'model', TodayListCtrl]
+angular.module('starter.controller').controller 'WeekListCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$filter', 'model', WeekListCtrl]
 angular.module('starter.controller').controller 'CompletedListCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$filter', 'model', CompletedListCtrl]
 
 angular.module('starter.controller').filter 'todosFilter', TodosFilter

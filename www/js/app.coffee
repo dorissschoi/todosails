@@ -48,13 +48,13 @@ module
 				controller: 'TodoEditCtrl'				
 
 	# My todo day
-	$stateProvider.state 'app.todayList',
-		url: "/todo/todayList"
+	$stateProvider.state 'app.weekList',
+		url: "/todo/weekList"
 		cache: false
 		views:
 			'menuContent':
-				templateUrl: "templates/todo/todaylist.html"
-				controller: 'TodayListCtrl'
+				templateUrl: "templates/todo/weeklist.html"
+				controller: 'WeekListCtrl'
 
 	# My todo completed
 	$stateProvider.state 'app.completedList',
@@ -65,7 +65,7 @@ module
 				templateUrl: "templates/todo/completedlist.html"
 				controller: 'CompletedListCtrl'									
 	
-	$urlRouterProvider.otherwise('/todo/todayList')				
+	$urlRouterProvider.otherwise('/todo/weekList')				
 	#$urlRouterProvider.otherwise('/todo/completedList')
 	#$urlRouterProvider.otherwise('/todo/mytodopage')
 	

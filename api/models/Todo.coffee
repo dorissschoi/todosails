@@ -25,7 +25,7 @@ sendMsg = (values, todoAdminToken) ->
 		
 		
 		http.post sails.config.im.url, data, opts, (err, res) ->
-			sails.log "post msg : " + JSON.stringify res.body
+			#sails.log "post msg : " + JSON.stringify res.body
 			if err
 				return reject err
 			fulfill res
