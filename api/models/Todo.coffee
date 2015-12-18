@@ -20,12 +20,12 @@ sendMsg = (values, todoAdminToken) ->
 		
 		data = 
 			from: 	sails.config.im.adminjid
-			to:		"#{values.createdBy}@#{sails.config.im.xmpp.domain}"
+			to:		"#{values.ownedBy}@#{sails.config.im.xmpp.domain}"
 			body: 	sails.config.im.txt	+ " : "+ values.task	
 		
 		
 		http.post sails.config.im.url, data, opts, (err, res) ->
-			#sails.log "post msg : " + JSON.stringify res.body
+			sails.log "post msg : " + JSON.stringify res.body
 			if err
 				return reject err
 			fulfill res
@@ -34,7 +34,7 @@ getToken = (values) ->
 	return new Promise (fulfill, reject) ->
 		sails.services.rest.token sails.config.oauth2.tokenURL, sails.config.im.client, sails.config.im.user, sails.config.im.scope
 			.then (res) ->
-				#sails.log "return todoadmin access_token: " + JSON.stringify res.body.access_token
+				sails.log "return todoadmin access_token: " + JSON.stringify res.body.access_token
 				fulfill res
 			.catch reject
 				
