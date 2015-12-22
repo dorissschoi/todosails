@@ -44,6 +44,7 @@
     "lodash": "^3.10.1",
     "log4js": "^0.6.29",
     "needle": "^0.11.0",
+    "node-schedule": "^0.6.0",
     "parsed-url": "0.0.0",
     "passport": "^0.3.0",
     "passport-http-bearer": "^1.0.1",

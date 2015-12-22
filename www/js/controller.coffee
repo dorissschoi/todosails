@@ -114,13 +114,15 @@ TodoCtrl = ($rootScope, $scope, $state, $stateParams, $location, model, $filter,
 				$scope.endTime = $scope.timePickerEndObject.inputEpochTime 
 				output = new Date($scope.endDate.getFullYear(), $scope.endDate.getMonth(), $scope.endDate.getDate(), parseInt($scope.endTime / 3600), $scope.endTime / 60 % 60)
 				@model.dateEnd = output
-			else @model.dateEnd = null	
-			@model.$save().catch alert
-			$scope.todo.task = ''
-			$scope.todo.dateEnd = null
-			$scope.datepickerObjectEnd.inputDate = null
-			$scope.timePickerEndObject.inputEpochTime = null
-			$state.go 'app.weekList', {}, { reload: true, cache: false }
+			else @model.dateEnd = null
+				
+			#@model.$save().catch alert
+			@model.$save().then =>			
+				$scope.todo.task = ''
+				$scope.todo.dateEnd = null
+				$scope.datepickerObjectEnd.inputDate = null
+				$scope.timePickerEndObject.inputEpochTime = null
+				$state.go 'app.weekList', {}, { reload: true, cache: false }
 		
 	$scope.controller = new TodoView model: $scope.model
 	

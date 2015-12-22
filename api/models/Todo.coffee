@@ -30,11 +30,11 @@ sendMsg = (values, todoAdminToken) ->
 				return reject err
 			fulfill res
 
-getToken = (values) ->
+getToken = ->
 	return new Promise (fulfill, reject) ->
 		sails.services.rest.token sails.config.oauth2.tokenURL, sails.config.im.client, sails.config.im.user, sails.config.im.scope
 			.then (res) ->
-				sails.log "return todoadmin access_token: " + JSON.stringify res.body.access_token
+				#sails.log "return todoadmin access_token: " + JSON.stringify res.body.access_token
 				fulfill res
 			.catch reject
 				

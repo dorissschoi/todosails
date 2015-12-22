@@ -40,6 +40,7 @@ module.exports =
 			secret: 'pass1234'
 		scope:  	[ "https://mob.myvnc.com/org/users", "https://mob.myvnc.com/mobile"]
 		txt:		"one new task"
+		digesttxt:	"Overdue task"
 		xmpp:
 			domain:	'mob.myvnc.com'
 		adminjid:	"todoadmin@mob.myvnc.com"
